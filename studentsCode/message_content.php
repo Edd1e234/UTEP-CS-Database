@@ -36,7 +36,18 @@ $account_messages = getMessages($account_name, $receipt_account_name, $conn);
 
 $messages = array_merge($messages, $account_messages);
 usort($messages, 'comparator');
-print_r($messages);
+# print_r($messages);
+
+/*
+foreach($messages as $message) {
+    $name = ($message->account_name == $account_name) ? $account_name : $receipt_account_name;
+    ?>
+    <tr>
+        <td><?php printf("%s", $name . ": " . $message->content) ?><\td>
+    <\tr>
+    <?php
+}
+*/
 
 /*
     $sid = isset($_POST['Sid']) ? $_POST['Sid'] : " ";
@@ -66,3 +77,41 @@ class Message {
     }
 }
 ?>
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Importing Bootstrap CSS library https://getbootstrap.com/ -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <table class="table" width="50%">
+      <thread>
+          <td> Messages </td>
+          <tbody>
+          <?php
+          foreach ($messages as $message) {
+              $name = ($message->account_name == $account_name) ? $account_name : $receipt_account_name;
+          ?>
+              <tr>
+                  <td><?php printf("%s", $name . ": " . $message->content) ?></td>
+              </tr>
+          <?php
+          }
+          ?>
+          </tbody>
+      </thread>
+    </table>
+<!-- Link to return to student_menu-->
+<!-- TODO CHange this! -->
+<a href="student_menu.php">Back to Student Menu</a><br>
+<!-- jQuery and JS bundle w/ Popper.js -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
+
