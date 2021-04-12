@@ -64,7 +64,7 @@ if (!empty($_POST)) {
     $input_username = isset($_POST['username']) ? $_POST['username'] : " ";
     $input_password = isset($_POST['password']) ? $_POST['password'] : " ";
 
-    $queryUser = "SELECT * FROM User  WHERE Uusername='" . $input_username . "' AND UPassword='" . $input_password . "';";
+    $queryUser = "SELECT * FROM User_l  WHERE Uusername='" . $input_username . "' AND UPassword='" . $input_password . "';";
     $resultUser = $conn->query($queryUser);
 
     if ($resultUser->num_rows > 0) {

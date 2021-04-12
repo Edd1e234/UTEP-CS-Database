@@ -64,7 +64,7 @@
     $password = isset($_POST['password']) ? $_POST['password'] : " ";
 
     //Insert into Student table;
-    $queryUser  = "INSERT INTO User (Uusername, Upassword)
+    $queryUser  = "INSERT INTO User_l (Uusername, Upassword)
                 VALUES ('".$username."', '".$password."');";
     if ($conn->query($queryUser) === TRUE) {
        echo "New user created successfully with the username: ".$username."</p>";

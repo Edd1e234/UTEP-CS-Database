@@ -14,7 +14,7 @@
 <?php
 # localhost:8080
 $host = "dbserver.cs.utep.edu"; #enter the DB server location
-$db = "edgarcia5_s21makdb";   # 1. Enter your team database here for your group project.
+$db = "s21_mak_team14";   # 1. Enter your team database here for your group project.
                             # OR 2. Enter your individual database here to complete this exercise.
 
 $username = "edgarcia5";  # If 1 above (for your group project), enter the username of the interface or reports lead.
