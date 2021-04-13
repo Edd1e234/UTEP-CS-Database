@@ -8,6 +8,7 @@
 session_start();
 require_once('../config.php');
 require_once('../validate_session.php');
+require_once("constants.php");
 ?>
 
 <html>
@@ -23,7 +24,7 @@ require_once('../validate_session.php');
 <body>
 <?php
 $account_name = "NEPatriots12";
-$sql = "select Receipt_account_name from message where Account_name = 'NEPatriots12'";
+$sql = "select account_name from account;";
 if ($result = $conn->query($sql)) {
     ?>
     <table class="table" width=50%>
@@ -41,10 +42,12 @@ if ($result = $conn->query($sql)) {
         }
         $receipt_account_names = array_keys(getAccountNames($result));
         foreach ($receipt_account_names as $receipt_account_name) {
+            if ($receipt_account_name == $account_name) continue;
+            $url_params = RECEIPT_ACCOUNT_NAME . "=" . $receipt_account_name . "&" . ACCOUNT_NAME . "=" . $account_name;
             ?>
             <tr>
                 <td><?php printf("%s", $receipt_account_name); ?></td>
-                <td><a href="message_content.php?Sid=<?php echo $receipt_account_name?>">View</a></td>
+                <td><a href="message_content.php?<?php echo $url_params?>">View</a></td>
             </tr>
             <?php
         }

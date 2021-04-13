@@ -2,8 +2,11 @@
 <?php
 // Accessing the information for the DB connection from the configuration file and validating that a user is logged in.
 session_start();
-require_once('../config.php');
+require('../config.php');
 require_once('../validate_session.php');
+require_once("constants.php");
+
+$note = array_key_exists('note', $_GET) ? $_GET['note'] : null;
 
 function getMessages($receipt_account_name, $account_name, $connection): array {
     $query = "select * from message_content where Date in (select Date from message where Receipt_account_name ='"
@@ -27,44 +30,32 @@ function comparator($message_1, $message_2): int {
 }
 
 # TODO Change this from Sid to account_name
-$receipt_account_name = $_GET['Sid'];
+$receipt_account_name = $_GET[RECEIPT_ACCOUNT_NAME];
+$account_name = $_GET[ACCOUNT_NAME];
 
-# TODO This is considered the logged in account!
-$account_name = "NEPatriots12";
+# $conn = (new Connection())->getConnection();
+
+queryMessage($note, $conn, $receipt_account_name, $account_name);
 $messages = getMessages($receipt_account_name, $account_name, $conn);
 $account_messages = getMessages($account_name, $receipt_account_name, $conn);
-
 $messages = array_merge($messages, $account_messages);
 usort($messages, 'comparator');
-# print_r($messages);
 
-/*
-foreach($messages as $message) {
-    $name = ($message->account_name == $account_name) ? $account_name : $receipt_account_name;
-    ?>
-    <tr>
-        <td><?php printf("%s", $name . ": " . $message->content) ?><\td>
-    <\tr>
-    <?php
-}
-*/
+function queryMessage($note, $connection, $receipt_account_name, $account_name) {
+    if (!empty($note)) {
+        $date = (new DateTime())->getTimestamp();
+        $queryMessage = "Insert into message(Receipt_account_name, Account_name, Date) Values ('"
+            . $receipt_account_name ."','" . $account_name . "'," . $date . ");";
 
-/*
-    $sid = isset($_POST['Sid']) ? $_POST['Sid'] : " ";
-    $firstName = isset($_POST['first_name']) ? $_POST['first_name'] : " ";
-    $middleName = isset($_POST['middle_name']) ? $_POST['middle_name'] : " ";
-    $lastName = isset($_POST['last_name']) ? $_POST['last_name'] : " ";
-
-    $query = "UPDATE Student SET SfirstName='$firstName', SmiddleName='$middleName', SlastName='$lastName' WHERE Sid = $sid";
-    echo $query;
-
-    if (mysqli_query($conn, $query)) {
-        echo "Record updated successfully";
-        header("Location: view_students.php");
-    } else {
-        echo "Error updating record: " . mysqli_error($conn);
+        if ($connection->query($queryMessage) === FALSE) {
+            print("Failed at :" . $queryMessage);
+        }
+        $queryMessage = "Insert into message_content(Date, Content) Values(" . $date . ", '" . $note . "');";
+        if ($connection->query($queryMessage) === FALSE) {
+            print("Failed at :" . $queryMessage);
+        }
     }
-*/
+}
 
 class Message {
     public int $date = -1;
@@ -77,7 +68,6 @@ class Message {
     }
 }
 ?>
-
 <html>
 
 <head>
@@ -93,11 +83,12 @@ class Message {
           <td> Messages </td>
           <tbody>
           <?php
+          $note = array_key_exists('note', $_POST) ? $_POST['note'] : null;
           foreach ($messages as $message) {
               $name = ($message->account_name == $account_name) ? $account_name : $receipt_account_name;
           ?>
               <tr>
-                  <td><?php printf("%s", $name . ": " . $message->content) ?></td>
+                  <td><?php printf("%s", $name . ": " . $message->content); ?></td>
               </tr>
           <?php
           }
@@ -105,8 +96,15 @@ class Message {
           </tbody>
       </thread>
     </table>
+    <table class="table" width="50%">
+        <form action="<?= $_SERVER['PHP_SELF'] ?>" method="GET">
+            <textarea cols=40 rows=5 name="note" wrap=virtual></textarea>
+            <p/>
+            <input type=submit value="<?=$receipt_account_name?>" name="Sid">
+        </form>
+    </table>
 <!-- Link to return to student_menu-->
-<!-- TODO CHange this! -->
+<!-- TODO Change this! -->
 <a href="student_menu.php">Back to Student Menu</a><br>
 <!-- jQuery and JS bundle w/ Popper.js -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

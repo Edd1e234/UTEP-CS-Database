@@ -12,6 +12,25 @@
 -->
 
 <?php
+class Connection {
+    public $host = "dbserver.cs.utep.edu";
+    public $db = "s21_mak_team14";
+    public $username = "edgarcia5";
+    public $password = "*MAK2021!!";
+    public $conn;
+    function __construct() {
+        $this->conn = null;
+    }
+
+    function getConnection(): mysqli {
+        $this->conn = new mysqli($this->host, $this->username, $this->password, $this->db);
+        if ($this->conn->connect_error) {
+            die("Connection failed: ". $this->con->connect_error);
+        }
+        return $this->conn;
+    }
+}
+
 # localhost:8080
 $host = "dbserver.cs.utep.edu"; #enter the DB server location
 $db = "s21_mak_team14";   # 1. Enter your team database here for your group project.

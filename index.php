@@ -21,7 +21,6 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
 
 </head>
-
 <body>
   <div style="margin-top: 20px" class="container">
     
@@ -51,10 +50,7 @@
 </body>
 
 </html>
-
-
 <?php
-
 session_start();
 require_once("config.php");
 $_SESSION['logged_in'] = false;
