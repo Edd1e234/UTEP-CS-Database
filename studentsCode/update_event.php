@@ -24,30 +24,24 @@ require_once('constants.php');
 <body>
 <?php
 $account_name = $_SESSION[ACCOUNT_NAME];
+$event_id = $_GET['event_id'];
 
-$sql = "SELECT * from event where account_name = '" . $account_name . "';";
-$events = array();
+
+$sql = "SELECT account_name from event_guess_list where Event_id = '" . $event_id . "';";
 if ($result = $conn->query($sql)) {
     ?>
     <table class="table" width=50%>
         <thead>
-        <td>Host</td>
-        <td>Content </td>
-        <td>Date </td>
+        <td>Invited Guests</td>
         </thead>
         <tbody>
         <?php
         while ($row = $result->fetch_row()) {
-            $dateTime = new DateTime();
-            $dateTime->setTimestamp($row[3]);
-            $events[$row[0]] = 1;
+            if ($row[0] == $account_name) continue;
             ?>
             <tr>
-                <td><?php printf("%s", $row[1]); ?></td>
-                <td><?php printf("%s", $row[2]); ?></td>
-                <td><?php printf("%s", $dateTime->format("Y-m-d")); ?></td>
-                <td><a href="update_event.php?event_id=<?php echo $row[0] ?>">Invite Guests</a></td>
-                <td><a href="delete_event.php?event_id=<?php echo $row[0] ?>">Delete</a></td>
+                <td><?php printf("%s", $row[0]); ?></td>
+                <td><a href="modify_event.php?remove_event=<?php echo $row[0] . "-" . $event_id ?>">Remove</a></td>
             </tr>
             <?php
         }
@@ -59,24 +53,21 @@ if ($result = $conn->query($sql)) {
     print("Query went wrong");
 }
 
-$sql = "select * from event where Event_id in (select Event_id from event_guess_list where account_name = '"
-    . $account_name . "');";
+$sql = "select account_name from account where not account_name in (select account_name from event_guess_list "
+        . "where Event_id = '" . $event_id . "')";
 if ($result = $conn->query($sql)) {
     ?>
     <table class="table" width=50%>
+        <thead>
+        <td>Guests To Invite </td>
+        </thead>
         <tbody>
         <?php
         while ($row = $result->fetch_row()) {
-            if (array_key_exists($row[0], $events)) continue;
-            $dateTime = new DateTime();
-            $dateTime->setTimestamp($row[3]);
-            $events[$row[0]] = 1;
             ?>
             <tr>
-                <td><?php printf("%s", $row[1]); ?></td>
-                <td><?php printf("%s", $row[2]); ?></td>
-                <td><?php printf("%s", $dateTime->format("Y-m-d")); ?></td>
-                <td><a href="delete_event.php?event_id=<?php echo $row[0] ?>">Delete</a></td>
+                <td><?php printf("%s", $row[0]); ?></td>
+                <td><a href="modify_event.php?add_to_event=<?php echo $row[0] . "-" . $event_id ?>">Add</a></td>
             </tr>
             <?php
         }
@@ -85,7 +76,7 @@ if ($result = $conn->query($sql)) {
     </table>
     <?php
 } else {
-    print("Query did nto go through: " . $sql) ;
+    print("Query did not go through: " . $sql) ;
 }
 ?>
 <!-- Link to return to student_menu-->

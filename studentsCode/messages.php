@@ -23,7 +23,7 @@ require_once("constants.php");
 
 <body>
 <?php
-$account_name = "NEPatriots12";
+$account_name = $_SESSION[ACCOUNT_NAME];
 $sql = "select account_name from account;";
 if ($result = $conn->query($sql)) {
     ?>
@@ -43,7 +43,7 @@ if ($result = $conn->query($sql)) {
         $receipt_account_names = array_keys(getAccountNames($result));
         foreach ($receipt_account_names as $receipt_account_name) {
             if ($receipt_account_name == $account_name) continue;
-            $url_params = RECEIPT_ACCOUNT_NAME . "=" . $receipt_account_name . "&" . ACCOUNT_NAME . "=" . $account_name;
+            $url_params = RECEIPT_ACCOUNT_NAME . "=" . $receipt_account_name;
             ?>
             <tr>
                 <td><?php printf("%s", $receipt_account_name); ?></td>
@@ -58,7 +58,7 @@ if ($result = $conn->query($sql)) {
 }
 ?>
 <!-- Link to return to student_menu-->
-<a href="student_menu.php">Back to Student Menu</a><br>
+<a href="menu.php?">Back to Student Menu</a><br>
 <!-- jQuery and JS bundle w/ Popper.js -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>

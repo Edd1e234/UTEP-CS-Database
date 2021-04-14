@@ -6,6 +6,8 @@ require('../config.php');
 require_once('../validate_session.php');
 require_once("constants.php");
 
+define('ACCOUNT_INFO', "account_info");
+
 $note = array_key_exists('note', $_GET) ? $_GET['note'] : null;
 
 function getMessages($receipt_account_name, $account_name, $connection): array {
@@ -30,8 +32,14 @@ function comparator($message_1, $message_2): int {
 }
 
 # TODO Change this from Sid to account_name
-$receipt_account_name = $_GET[RECEIPT_ACCOUNT_NAME];
-$account_name = $_GET[ACCOUNT_NAME];
+if (array_key_exists(ACCOUNT_INFO, $_GET)) {
+    $values = explode("-", $_GET[ACCOUNT_INFO]);
+    $receipt_account_name = $values[0];
+    $account_name = $values[1];
+} else {
+    $receipt_account_name = $_GET[RECEIPT_ACCOUNT_NAME];
+    $account_name = $_SESSION[ACCOUNT_NAME];
+}
 
 # $conn = (new Connection())->getConnection();
 
@@ -97,15 +105,18 @@ class Message {
       </thread>
     </table>
     <table class="table" width="50%">
-        <form action="<?= $_SERVER['PHP_SELF'] ?>" method="GET">
+        <?php
+        $url_param = $receipt_account_name . "-" . $account_name;
+        ?>
+        <form action="<?=$_SERVER['PHP_SELF'] ?>" method="GET">
             <textarea cols=40 rows=5 name="note" wrap=virtual></textarea>
             <p/>
-            <input type=submit value="<?=$receipt_account_name?>" name="Sid">
+            <input type=submit value="<?=$receipt_account_name?>" name="<?=RECEIPT_ACCOUNT_NAME?>">
         </form>
     </table>
 <!-- Link to return to student_menu-->
 <!-- TODO Change this! -->
-<a href="student_menu.php">Back to Student Menu</a><br>
+<a href="menu.php?">Back to Menu</a><br>
 <!-- jQuery and JS bundle w/ Popper.js -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>

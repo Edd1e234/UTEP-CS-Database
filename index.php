@@ -54,6 +54,7 @@
 session_start();
 require_once("config.php");
 $_SESSION['logged_in'] = false;
+$_SESSION['account_name'] = "CallOfDutySoldier11";
 
 if (!empty($_POST)) {
   if (isset($_POST['Submit'])) {
@@ -72,7 +73,7 @@ if (!empty($_POST)) {
       
       // You can comment the next line (header) to check if the user was successfully logged in. 
       // But it will not redirect to the student_menu file automatically.
-      header("Location: studentsCode/student_menu.php");
+      header("Location: studentsCode/menu.php");
     } else {
       echo "User not found.";
     }

@@ -16,10 +16,14 @@
 <div class="container">
     <h1>Minor Net Menu: </h1>
     <?php
-
+    require_once("constants.php");
+    session_start();
+    $account_name = $_SESSION[ACCOUNT_NAME];
+    $url_params = "account_name=" . $account_name;
     ?>
-    <a href="messages.php">Messages</a><br>
+    <a href="messages.php?">Messages</a><br>
     <a href="events.php">Events</a><br>
+    <a href="create_event.php">Create Event</a><br>
 
 </div>
 
