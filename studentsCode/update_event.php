@@ -64,6 +64,7 @@ if ($result = $conn->query($sql)) {
         <tbody>
         <?php
         while ($row = $result->fetch_row()) {
+            if ($row[0] == $account_name) continue;
             ?>
             <tr>
                 <td><?php printf("%s", $row[0]); ?></td>
