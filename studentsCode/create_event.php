@@ -68,7 +68,7 @@
 
 
         $query  = "INSERT INTO event (Event_id,account_name,content,date)
-                        VALUES ('".$event_id."', '".$account_name."', '".$description."', '".$date."');";
+                        VALUES ('$event_id', '$account_name', '$description', '$date');";
 
         if ($conn->query($query) === TRUE) {
             echo "<br> New record created successfully for Event. Event Id: " . $event_id;

@@ -11,8 +11,7 @@ define('ACCOUNT_INFO', "account_info");
 $note = array_key_exists('note', $_GET) ? $_GET['note'] : null;
 
 function getMessages($receipt_account_name, $account_name, $connection): array {
-    $query = "select * from message_content where Date in (select Date from message where Receipt_account_name ='"
-        . $receipt_account_name . "' AND Account_name = '" . $account_name . "')";
+    $query = "select Date, Content from messages where receipt_account_name = '$receipt_account_name' AND account_name = '$account_name';";
     $receipt_account_name_messages = array();
     if ($result = $connection->query($query)) {
         while ($row = $result->fetch_row()) {
@@ -52,13 +51,8 @@ usort($messages, 'comparator');
 function queryMessage($note, $connection, $receipt_account_name, $account_name) {
     if (!empty($note)) {
         $date = (new DateTime())->getTimestamp();
-        $queryMessage = "Insert into message(Receipt_account_name, Account_name, Date) Values ('"
-            . $receipt_account_name ."','" . $account_name . "'," . $date . ");";
-
-        if ($connection->query($queryMessage) === FALSE) {
-            print("Failed at :" . $queryMessage);
-        }
-        $queryMessage = "Insert into message_content(Date, Content) Values(" . $date . ", '" . $note . "');";
+        $queryMessage = "INSERT INTO messages(receipt_account_name, account_name, Date, content) VALUES " .
+            "('$receipt_account_name', '$account_name', $date, '$note')";
         if ($connection->query($queryMessage) === FALSE) {
             print("Failed at :" . $queryMessage);
         }
