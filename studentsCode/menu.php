@@ -23,6 +23,7 @@
     <a href="messages.php?">Messages</a><br>
     <a href="events.php">Events</a><br>
     <a href="create_event.php">Create Event</a><br>
+    <a href="posts.php">Posts</a><br>
 
 </div>
 
