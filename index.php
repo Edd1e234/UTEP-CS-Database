@@ -27,8 +27,8 @@
     <h1>User Login</h1>
     <form action="index.php" method="post">
       <div class="form-group">
-        <label for="username">User Name</label>
-        <input class="form-control" type="text" id="username" name="username">
+        <label for="id">User Id </label>
+        <input class="form-control" type="text" id="id" name="id">
       </div>
       <div class="form-group">
         <label for="password">Password</label>
@@ -38,8 +38,7 @@
         <input class="btn btn-primary" name='Submit' type="submit" value="Submit">
       </div>
     </form>
-    <a href="create_user.php">Don't have an account? Create one now!</a><br><br>
-    
+    <a href="studentsCode/createUser.php">Create User!</a><br><br>
   </div>
 
   <!-- jQuery and JS bundle w/ Popper.js -->
@@ -58,22 +57,21 @@ $_SESSION['account_name'] = "MasterChief96";
 
 if (!empty($_POST)) {
   if (isset($_POST['Submit'])) {
-    $input_username = isset($_POST['username']) ? $_POST['username'] : " ";
+    $input_username = isset($_POST['id']) ? $_POST['id'] : " ";
     $input_password = isset($_POST['password']) ? $_POST['password'] : " ";
 
-    $queryUser = "SELECT * FROM User_l  WHERE Uusername='" . $input_username . "' AND UPassword='" . $input_password . "';";
+    $queryUser = "SELECT id FROM user  WHERE id='" . $input_username . "' AND password='" . $input_password . "';";
     $resultUser = $conn->query($queryUser);
 
     if ($resultUser->num_rows > 0) {
       //if there is a result, that means that the user was found in the database
-      $_SESSION['user'] = $input_username;
+      $_SESSION['id'] = $input_username;
       $_SESSION['logged_in'] = true;
-      
       echo "Session logged_in is: ".$_SESSION['logged_in'];
-      
+
       // You can comment the next line (header) to check if the user was successfully logged in. 
       // But it will not redirect to the student_menu file automatically.
-      header("Location: studentsCode/menu.php");
+      header("Location: view_account.php");
     } else {
       echo "User not found.";
     }

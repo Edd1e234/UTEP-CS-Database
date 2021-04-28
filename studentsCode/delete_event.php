@@ -7,7 +7,7 @@ require_once('../config.php');
 require_once('../validate_session.php');
 require_once('constants.php');
 
-function queryFunction($connection, $query, $location="events.php?dfafkaldfalkjf") {
+function queryFunction($connection, $query, $location="events.php?") {
 
     if ($connection->query($query) === TRUE) {
         echo "Student deleted successfuly";

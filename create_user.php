@@ -12,6 +12,10 @@
 
 
 -->
+
+<?php
+require_once('../config.php');
+?>
 <!doctype html>
 <html lang="en">
 
@@ -52,8 +56,6 @@
     
         <!-- PhP code starts here -->
     <?php
-        require_once('config.php');
-        
         if (isset($_POST['Submit'])){
 
     
@@ -75,8 +77,5 @@
     //header("Location: index.php");
 }
 ?>
-
-
 </body>
-
 </html>

@@ -29,7 +29,7 @@
     </form>
     <div>
         <br>
-        <a href="createUser.php">Click to create User</a>-->
+        <a href="../index.php">Back</a>-->
     </div>
 
     <!-- jQuery and JS bundle w/ Popper.js -->
@@ -38,7 +38,7 @@
 
     <!-- PhP code starts here -->
 <?php
-require_once('config.php');
+require_once('../config.php');
 
 if (isset($_POST['Submit']))
 {

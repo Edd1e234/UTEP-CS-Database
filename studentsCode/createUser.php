@@ -55,7 +55,7 @@
     <!-- PhP code starts here -->
 
     <?php
-    require_once('config.php');
+    require_once('../config.php');
 
     if (isset($_POST['Submit']))
     {
@@ -72,12 +72,12 @@
         //Insert into USER table;
         $queryUser  = "INSERT INTO User (Fname, Lname, age, email, id, password) 
                    VALUES ('".$firstname."', '".$lastname."', '".$age."', '".$email."', '".$id."', '".$password."');";
-        if ($conn->query($queryUser) === TRUE)
-        {
+        if ($conn->query($queryUser) === TRUE) {
             echo "New user created successfully with id: ".$id."</p>";
+            header ("Location: ../index.php");
         }
-        else
-        {
+
+        else {
             echo "Error: " . $queryUser . "<br>" . $conn->error;
         }
         // If you want to redirect without seeing messages printed, uncomment the following line:

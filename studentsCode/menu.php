@@ -19,7 +19,6 @@
     require_once("constants.php");
     session_start();
     $account_name = $_SESSION[ACCOUNT_NAME];
-    $url_params = "account_name=" . $account_name;
     ?>
     <a href="messages.php?">Messages</a><br>
     <a href="events.php">Events</a><br>
