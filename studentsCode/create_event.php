@@ -15,7 +15,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>CS4342 Create Student</title>
+    <title>Create Event</title>
 
     <!-- Importing Bootstrap CSS library https://getbootstrap.com/ -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
@@ -23,7 +23,7 @@
 
 <body>
 <div style="margin-top: 20px" class="container">
-    <h1>Create Student</h1>
+    <h1>Create Event</h1>
     <!-- styling of the form for bootstrap https://getbootstrap.com/docs/4.5/components/forms/ -->
     <form action="create_event.php" method="post">
         <div class="form-group">

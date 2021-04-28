@@ -54,7 +54,7 @@
 session_start();
 require_once("config.php");
 $_SESSION['logged_in'] = false;
-$_SESSION['account_name'] = "CallOfDutySoldier11";
+$_SESSION['account_name'] = "MasterChief96";
 
 if (!empty($_POST)) {
   if (isset($_POST['Submit'])) {
