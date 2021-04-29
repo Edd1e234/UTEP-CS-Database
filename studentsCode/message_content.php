@@ -1,6 +1,12 @@
 
 <?php
 // Accessing the information for the DB connection from the configuration file and validating that a user is logged in.
+
+/**
+ * create procedure SelectMessages(IN accountName varchar(255), IN receiptAccountName varchar(255))
+ * begin select content from messages where account_name = accountName and receipt_account_name = receiptAccountName order by Date ASC;
+ * END //
+ */
 session_start();
 require('../config.php');
 require_once('../validate_session.php');
@@ -10,15 +16,16 @@ define('ACCOUNT_INFO', "account_info");
 
 $note = array_key_exists('note', $_GET) ? $_GET['note'] : null;
 
-function getMessages($receipt_account_name, $account_name, $connection): array {
-    $query = "select Date, Content from messages where receipt_account_name = '$receipt_account_name' AND account_name = '$account_name';";
+function getMessages($account_name, $receipt_account_name, $connection): array {
+    $query = "CALL SelectMessages('$account_name', '$receipt_account_name');";
     $receipt_account_name_messages = array();
     if ($result = $connection->query($query)) {
         while ($row = $result->fetch_row()) {
-            array_push($receipt_account_name_messages, new Message($row[0], $row[1], $account_name));
+            array_push($receipt_account_name_messages, new Message($row[0], $account_name));
         }
+        $connection->next_result();
     } else {
-        echo "Something has gone wrong \n Query: " . $query;
+        echo "Something has gone wrong at here" . $query . "\n";
     }
     return $receipt_account_name_messages;
 }
@@ -40,13 +47,10 @@ if (array_key_exists(ACCOUNT_INFO, $_GET)) {
     $account_name = $_SESSION[ACCOUNT_NAME];
 }
 
-# $conn = (new Connection())->getConnection();
-
 queryMessage($note, $conn, $receipt_account_name, $account_name);
-$messages = getMessages($receipt_account_name, $account_name, $conn);
-$account_messages = getMessages($account_name, $receipt_account_name, $conn);
-$messages = array_merge($messages, $account_messages);
-usort($messages, 'comparator');
+$messages = getMessages($account_name, $receipt_account_name, $conn);
+$receipt_account_messages = getMessages($receipt_account_name, $account_name, $conn);
+$messages = array_merge($messages, $receipt_account_messages);
 
 function queryMessage($note, $connection, $receipt_account_name, $account_name) {
     if (!empty($note)) {
@@ -60,11 +64,9 @@ function queryMessage($note, $connection, $receipt_account_name, $account_name) 
 }
 
 class Message {
-    public int $date = -1;
     public String $content;
     public String $account_name;
-    function __construct($date, $content, $account_name) {
-        $this->date = $date;
+    function __construct($content, $account_name) {
         $this->content = $content;
         $this->account_name = $account_name;
     }
