@@ -25,7 +25,7 @@ require_once('constants.php');
 <?php
 $account_name = $_SESSION[ACCOUNT_NAME];
 
-$sql = "SELECT * from event where account_name = '" . $account_name . "';";
+$sql = "SELECT * from upcomingEvents where account_name = '" . $account_name . "';";
 $events = array();
 if ($result = $conn->query($sql)) {
     ?>
