@@ -21,20 +21,13 @@ function getMessages($account_name, $receipt_account_name, $connection): array {
     $receipt_account_name_messages = array();
     if ($result = $connection->query($query)) {
         while ($row = $result->fetch_row()) {
-            array_push($receipt_account_name_messages, new Message($row[0], $account_name));
+            array_push($receipt_account_name_messages, new Message($row[0], $account_name == $row[2] ? $account_name : $receipt_account_name));
         }
         $connection->next_result();
     } else {
         echo "Something has gone wrong at here" . $query . "\n";
     }
     return $receipt_account_name_messages;
-}
-
-function comparator($message_1, $message_2): int {
-    if ($message_1->date > $message_2->date) {
-        return 1;
-    }
-    return 0;
 }
 
 # TODO Change this from Sid to account_name
@@ -49,8 +42,12 @@ if (array_key_exists(ACCOUNT_INFO, $_GET)) {
 
 queryMessage($note, $conn, $receipt_account_name, $account_name);
 $messages = getMessages($account_name, $receipt_account_name, $conn);
-$receipt_account_messages = getMessages($receipt_account_name, $account_name, $conn);
-$messages = array_merge($messages, $receipt_account_messages);
+/*
+echo "Messages: \n";
+foreach ($messages as $message) {
+    echo $message->content . "\n";
+}
+*/
 
 function queryMessage($note, $connection, $receipt_account_name, $account_name) {
     if (!empty($note)) {
